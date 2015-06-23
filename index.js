@@ -27,9 +27,9 @@ reactNativeStore.createDataBase = function() {
 
         AsyncStorage.setItem(dbName, JSON.stringify({}), function(err) {
             if (err) {
-                reject(err)
+                reject(err);
             } else {
-                resolve();
+                resolve({});
             }
         });
 
@@ -49,15 +49,15 @@ reactNativeStore.saveTable = function(tableName, tableData) {
             };
             AsyncStorage.setItem(dbName, JSON.stringify(databaseData), function(err) {
                 if (err) {
-                    reject(err)
+                    reject(err);
                 } else {
                     resolve(databaseData);
                 }
-            })
+            });
         });
 
     });
-}
+};
 
 // 选择数据表
 reactNativeStore.table = function(tableName) {
@@ -70,7 +70,7 @@ reactNativeStore.table = function(tableName) {
                     self.saveTable(tableName).then(function() {
                         var model = new Model(tableName, databaseData ? databaseData : {});
                         resolve(model);
-                    })
+                    });
                 });
             else {
 
@@ -84,9 +84,9 @@ reactNativeStore.table = function(tableName) {
                     resolve(model);
                 }
             }
-        })
+        });
     });
-}
+};
 
 // 获得AsyncStorage的值
 reactNativeStore.getItem = function(key) {
@@ -105,26 +105,26 @@ reactNativeStore.getItem = function(key) {
 Model.prototype.where = function(data) {
     this._where = data || null;
     return this;
-}
+};
 
 // limit
 Model.prototype.limit = function(data) {
     this._limit = data || 100;
     return this;
-}
+};
 
 // offset
 Model.prototype.offset = function(data) {
     this._offset = data || 0;
     return this;
-}
+};
 
 Model.prototype.init = function(){
     this.where();
     this.limit();
     this.offset();
     return this;
-}
+};
 
 // 更新数据
 Model.prototype.update = function(data) {
@@ -178,7 +178,7 @@ Model.prototype.updateById = function(id, data) {
     });
 
     return this.update(data);
-}
+};
 
 // 删除数据
 Model.prototype.remove = function(id) {
@@ -228,7 +228,7 @@ Model.prototype.removeById = function(id) {
     });
 
     return this.remove();
-}
+};
 
 // 添加数据
 Model.prototype.add = function(data) {
@@ -249,7 +249,7 @@ Model.prototype.get = function(id) {
         _id: id
     });
     return this.find(1);
-}
+};
 
 // 取多条数据
 Model.prototype.find = function() {
@@ -293,7 +293,7 @@ Model.prototype.find = function() {
 
     this.init();
     return results;
-}
+};
 
 
 
