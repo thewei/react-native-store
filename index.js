@@ -284,12 +284,11 @@ Model.prototype.find = function() {
         }
     }
 
-    if (typeof(limit) == 'number') {
+    if (typeof(this._limit) === 'number' && typeof(this._offset) === 'number') {
         return results.slice(this._offset, this._limit + this._offset);
     } else {
         return results;
     }
-
 
     this.init();
     return results;
