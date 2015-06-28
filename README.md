@@ -108,19 +108,19 @@ ReactNativeStore.table("articles").then(function(articles){
     // Get Datas
 	var articles = articles.where({
 		title:"Title"
-	).find(data);
+	).find();
     console.log(articles); //articles data
     
     // limit
     var articles = articles.where({
 		title:"Title"
-	).limit(10).find(data);
+	).limit(10).find();
     console.log(articles); //articles data
     
     // offset
     var articles = articles.where({
 		title:"Title"
-	).offset(10).find(data);
+	).offset(10).find();
     console.log(articles); //articles data
     
 });
