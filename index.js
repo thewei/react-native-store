@@ -252,8 +252,8 @@ Model.prototype.get = function(id) {
 };
 
 // 取多条数据
-Model.prototype.find = function() {
-
+Model.prototype.find = function(limit) {
+    
     var results = [];
     var rows = this.databaseData[this.tableName]["rows"];
 
@@ -284,7 +284,11 @@ Model.prototype.find = function() {
         }
     }
 
-    if (typeof(this._limit) === 'number' && typeof(this._offset) === 'number') {
+    if (typeof(limit) === 'number') {
+        this._limit = limit;
+    }
+    
+    if (typeof(this._limit) === 'number') {
         return results.slice(this._offset, this._limit + this._offset);
     } else {
         return results;
@@ -293,7 +297,5 @@ Model.prototype.find = function() {
     this.init();
     return results;
 };
-
-
 
 module.exports = reactNativeStore;
