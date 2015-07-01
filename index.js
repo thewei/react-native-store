@@ -248,12 +248,13 @@ Model.prototype.get = function(id) {
     this.where({
         _id: id
     });
-    return this.find(1);
+    
+    return this.limit(1).find();
 };
 
 // 取多条数据
 Model.prototype.find = function() {
-
+    
     var results = [];
     var rows = this.databaseData[this.tableName]["rows"];
 
@@ -284,17 +285,14 @@ Model.prototype.find = function() {
         }
     }
 
-    if (typeof(limit) == 'number') {
+    if (typeof(this._limit) === 'number') {
         return results.slice(this._offset, this._limit + this._offset);
     } else {
         return results;
     }
 
-
     this.init();
     return results;
 };
-
-
 
 module.exports = reactNativeStore;
