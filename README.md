@@ -2,7 +2,7 @@
 
 A simple database base on react-native AsyncStorage.
 
-***NOTE***: since v0.1, the API is changed!
+***NOTE***: since v0.0.4, the API is changed!
 
 ### Installation
 ```bash
@@ -21,7 +21,15 @@ db_store
 
 ```
 
-### Example
+### API
+- Model( modelName )
+- Model.add( data, filter )
+- Model.update( data, filter )
+- Model.remove( filter )
+- Model.find( filter, parmas )
+- Model.get( filter, parmas )
+
+### Simple example
 ```js
 var reactNativeStore = require('react-native-store');
 
@@ -59,18 +67,6 @@ var reactNativeStore = require('react-native-store');
 
 });
 ```
-
-### API
-- Model( modelName )
-- Model.add( data, filter )
-- Model.update( data, filter )
-- Model.updateById( data, filter )
-- Model.remove( data, filter )
-- Model.removeById( data, filter )
-- Model.find( data, filter )
-- Model.get( data, filter )
-
-more API please check this file: `./lib/index.js`
 
 ### Contributing
 - Fork this Repo first
