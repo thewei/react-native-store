@@ -1,9 +1,10 @@
 {
   "name": "react-native-store",
-  "version": "0.0.3",
+  "version": "0.1.0",
   "description": "A simple database base on react-native AsyncStorage.",
-  "main": "index.js",
+  "main": "./lib/index.js",
   "scripts": {
+    "build": "node_modules/webpack/bin/webpack.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -22,7 +23,6 @@
     "url": "https://github.com/thewei/react-native-store/issues"
   },
   "homepage": "https://github.com/thewei/react-native-store",
-  "dependencies": {
-    "promise-es6": "^0.1.0"
-  }
+  "dependencies": {},
+  "devDependencies": {}
 }

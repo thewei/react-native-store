@@ -1,19 +1,15 @@
-# react-native-store
+## react-native-store ![NPM version](https://img.shields.io/npm/v/react-native-store.svg?style=flat)
 
-**A simple database base on react-native AsyncStorage. **
+A simple database base on react-native AsyncStorage.
 
+***NOTE***: since v0.1, the API is changed!
 
-===
-
-## Installation
-
-```
-npm install react-native-store
-
+### Installation
+```bash
+$ npm install react-native-store --save
 ```
 
-## Data Anatomy
-
+### Data Anatomy
 ```
 db_store
    |---table_name
@@ -22,107 +18,91 @@ db_store
          |---rows (array)
          	   |--- _id (number)
          	   |--- ....
-         
-```
-
-
-## Useage
-
-
-### Add Data
 
 ```
-var ReactNativeStore = require('react-native-store');
 
-ReactNativeStore.table("articles").then(function(articles){
+### Example
+```js
+var reactNativeStore = require('react-native-store');
 
-	// Add Data
-	var id = articles.add({
-         title: "Title",
-         content: "This is a article"
-    });
-    
-    console.log(id); //row id
-    
+(async function(){
+  var userModel = await reactNativeStore.model("user");
+
+  // Add Data
+  var add_data = await userModel.add({
+    username: "tom",
+    age: 12,
+    sex: "man"
+  });
+  // return object or null
+  console.log(add_data);
+
+  // Update Data
+  var update_data = await userModel.update({
+    username: "mary",
+    age: 12
+  },{
+    _id: 1
+  });
+
+  console.log(update_data);
+
+  //Remove Data
+  var remove_data = await userModel.remove({
+    _id: 1
+  });
+  console.log(remove_data);
+
+  // search
+  var find_data = await userModel.find();
+  console.log("find",find_data);
+
 });
-
 ```
 
-### Remove Data
+### API
+- Model( modelName )
+- Model.add( data, filter )
+- Model.update( data, filter )
+- Model.updateById( data, filter )
+- Model.remove( data, filter )
+- Model.removeById( data, filter )
+- Model.find( data, filter )
+- Model.get( data, filter )
 
-```
-var ReactNativeStore = require('react-native-store');
+more API please check this file: `./lib/index.js`
 
-ReactNativeStore.table("articles").then(function(articles){
+### Contributing
+- Fork this Repo first
+- Clone your Repo
+- Install dependencies by `$ npm install`
+- Checkout a feature branch
+- Feel free to add your features
+- Make sure your features are fully tested
+- Publish your local branch, Open a pull request
+- Enjoy hacking <3
 
-	// Remove Data By Id
-	var id = articles.removeById(1);
-    console.log(id); //row id
-    
-    // Remove Data
-	var ids = articles.where({
-		title:"Title"
-	).remove();
-    console.log(ids); //row ids
-    
-});
+### MIT license
+Copyright (c) 2015 thewei
 
-```
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the &quot;Software&quot;), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
 
-### Update Data
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
 
-```
-var ReactNativeStore = require('react-native-store');
+THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
 
-ReactNativeStore.table("articles").then(function(articles){
-
-	// Update Data By Id
-	var data = {
-		title:: "Title1"
-	};
-	var id = articles.updateById(1,data);
-    console.log(id); //row id
-    
-    // Update Data
-	var ids = articles.where({
-		title:"Title"
-	).update(data);
-    console.log(ids); //row ids
-    
-});
-
-```
-
-
-### Find Data
-
-```
-var ReactNativeStore = require('react-native-store');
-
-ReactNativeStore.table("articles").then(function(articles){
-
-	// Get Data By Id
-	var article = articles.get(1);
-    console.log(article); //article data
-    
-    // Get Datas
-	var articles = articles.where({
-		title:"Title"
-	).find();
-    console.log(articles); //articles data
-    
-    // limit
-    var articles = articles.where({
-		title:"Title"
-	).limit(10).find();
-    console.log(articles); //articles data
-    
-    // offset
-    var articles = articles.where({
-		title:"Title"
-	).offset(10).find();
-    console.log(articles); //articles data
-    
-});
-
-```
+---
+![docor]()
+built upon love by [docor](git+https://github.com/turingou/docor.git) v0.3.0
