@@ -1,6 +1,6 @@
 {
   "name": "react-native-store",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "A simple database base on react-native AsyncStorage.",
   "main": "./lib/index.js",
   "scripts": {},
@@ -9,12 +9,16 @@
     "url": "https://github.com/thewei/react-native-store.git"
   },
   "keywords": [
-    "react",
+    "react-component",
     "react-native",
-    "AsyncStorage",
-    "dataBase",
     "ios"
+    "react",
+    "AsyncStorage",
+    "dataBase"
   ],
+  "peerDependencies": {
+    "react-native": ">=0.5"
+  },
   "author": "thewei",
   "license": "MIT",
   "bugs": {
