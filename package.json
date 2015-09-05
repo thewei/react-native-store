@@ -1,28 +1,28 @@
 {
-  "name": "react-native-store",
-  "version": "0.0.5",
-  "description": "A simple database base on react-native AsyncStorage.",
-  "main": "./lib/index.js",
-  "scripts": {},
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/thewei/react-native-store.git"
-  },
-  "keywords": [
-    "react-component",
-    "react-native",
-    "ios",
-    "react",
-    "AsyncStorage",
-    "dataBase"
-  ],
-  "peerDependencies": {
-    "react-native": ">=0.5"
-  },
-  "author": "thewei",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/thewei/react-native-store/issues"
-  },
-  "homepage": "https://github.com/thewei/react-native-store"
+    "name": "react-native-store",
+    "version": "0.0.6",
+    "description": "A simple database base on react-native AsyncStorage.",
+    "main": "./libs/index.js",
+    "scripts": {},
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/thewei/react-native-store.git"
+    },
+    "keywords": [
+        "react-component",
+        "react-native",
+        "ios",
+        "react",
+        "AsyncStorage",
+        "dataBase"
+    ],
+    "peerDependencies": {
+        "react-native": ">=0.5"
+    },
+    "author": "thewei",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/thewei/react-native-store/issues"
+    },
+    "homepage": "https://github.com/thewei/react-native-store"
 }

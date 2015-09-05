@@ -7,7 +7,7 @@ var {
 
 class Model {
 
-    constructor( modelName, dbName ) {
+    constructor(modelName, dbName) {
         this.dbName = dbName;
         this.modelName = modelName;
         this.offset = 0;
@@ -15,18 +15,18 @@ class Model {
     }
 
     async createDatabase() {
-        await AsyncStorage.setItem( this.dbName, JSON.stringify({}) );
+        await AsyncStorage.setItem(this.dbName, JSON.stringify({}));
         return this.getDatabase();
     }
 
     async getDatabase() {
 
-        return new Promise(async (resolve, reject) => {
+        return new Promise(async(resolve, reject) => {
             var database = await AsyncStorage.getItem(this.dbName);
             if (database) {
-                resolve( Object.assign( {}, JSON.parse(database) ) );
+                resolve(Object.assign({}, JSON.parse(database)));
             } else {
-                resolve( this.createDatabase() );
+                resolve(this.createDatabase());
             }
         });
 
@@ -34,7 +34,7 @@ class Model {
 
     async initModel() {
         this.database = await this.getDatabase();
-        this.model = this.database[this.modelName]?this.database[this.modelName]:{
+        this.model = this.database[this.modelName] ? this.database[this.modelName] : {
             'totalrows': 0,
             'autoinc': 1,
             'rows': {}
@@ -43,10 +43,10 @@ class Model {
     }
 
     // add
-    async add( data, filter ) {
+    async add(data, filter) {
         await this.initModel();
-        return new Promise(async (resolve, reject) => {
-            try{
+        return new Promise(async(resolve, reject) => {
+            try {
                 var autoinc = this.model.autoinc;
                 data._id = autoinc;
                 this.model.rows[autoinc] = data;
@@ -54,20 +54,20 @@ class Model {
                 this.model.totalrows += 1;
 
                 this.database[this.modelName] = this.model;
-                await AsyncStorage.setItem( this.dbName, JSON.stringify( this.database ) );
-                resolve( this.model.rows[autoinc] );
-            }catch(error){
+                await AsyncStorage.setItem(this.dbName, JSON.stringify(this.database));
+                resolve(this.model.rows[autoinc]);
+            } catch (error) {
                 Util.error('ReactNativeStore error: ' + error.message);
             }
         });
     }
 
     // update
-    async update( data, filter ) {
+    async update(data, filter) {
         await this.initModel();
 
-        return new Promise(async (resolve, reject) => {
-            try{
+        return new Promise(async(resolve, reject) => {
+            try {
                 var results = [];
                 var rows = this.model["rows"];
 
@@ -84,19 +84,19 @@ class Model {
                                 results.push(rows[row]);
                                 this.database[this.modelName] = this.model;
 
-                                await AsyncStorage.setItem( this.dbName, JSON.stringify( this.database ) );
+                                await AsyncStorage.setItem(this.dbName, JSON.stringify(this.database));
 
                             }
                         }
 
                     }
 
-                    results.length?resolve(results):resolve(null);
+                    results.length ? resolve(results) : resolve(null);
 
                 } else {
                     resolve(null);
                 }
-            } catch( error ) {
+            } catch (error) {
                 Util.error('ReactNativeStore error: ' + error.message);
             }
 
@@ -105,10 +105,10 @@ class Model {
     }
 
     // remove
-    async remove( filter ) {
+    async remove(filter) {
         await this.initModel();
-        return new Promise(async (resolve, reject)=>{
-            try{
+        return new Promise(async(resolve, reject) => {
+            try {
                 var results = [];
                 var rows = this.model["rows"];
                 if (filter) {
@@ -119,16 +119,16 @@ class Model {
                                 delete this.model["rows"][row];
                                 this.model["totalrows"]--;
                                 this.database[this.modelName] = this.model;
-                                await AsyncStorage.setItem( this.dbName, JSON.stringify( this.database ) );
+                                await AsyncStorage.setItem(this.dbName, JSON.stringify(this.database));
                             }
                         }
                     }
 
-                    results.length?resolve(results):resolve(null);
-                }else{
+                    results.length ? resolve(results) : resolve(null);
+                } else {
                     Util.error('ReactNativeStore error: parmas is empty.');
                 }
-            } catch( error ){
+            } catch (error) {
                 Util.error('ReactNativeStore error: ' + error.message);
             }
         });
@@ -136,13 +136,13 @@ class Model {
     }
 
     // find
-    async find( filter, parmas ) {
+    async find(filter, parmas) {
         await this.initModel();
-        return new Promise((resolve, reject)=>{
+        return new Promise((resolve, reject) => {
             var results = [];
             var rows = this.model["rows"];
-            var limit = ( parmas && parmas.limit ) || this.limit;
-            var offset = ( parmas && parmas.offset ) || this.offset;
+            var limit = (parmas && parmas.limit) || this.limit;
+            var offset = (parmas && parmas.offset) || this.offset;
 
             if (filter) {
                 for (var row in rows) {
@@ -160,7 +160,7 @@ class Model {
             }
 
             if (typeof(limit) === 'number') {
-                resolve( results.slice( offset, limit + offset ) );
+                resolve(results.slice(offset, limit + offset));
             } else {
                 resolve(results);
             }
@@ -169,10 +169,10 @@ class Model {
     }
 
     // get
-    get( filter, parmas ) {
+    get(filter, parmas) {
         parmas = parmas || {};
         parmas.limit = 1;
-        return this.find( filter, parmas );
+        return this.find(filter, parmas);
     }
 
 }
