@@ -2,14 +2,14 @@
 
 A simple database base on react-native AsyncStorage.
 
-***NOTE***: since v0.0.4, the API is changed!
+***NOTE***: since v0.0.4, the API was changed!
 
 ### Installation
 ```bash
 $ npm install react-native-store --save
 ```
 
-### Data Anatomy
+### Data anatomy
 ```
 db_store
    |---table_name
