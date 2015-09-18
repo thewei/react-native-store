@@ -48,7 +48,10 @@ class Model {
         return new Promise(async(resolve, reject) => {
             try {
                 var autoinc = this.model.autoinc;
-                data._id = data._id ? data._id : autoinc++;
+                if (!data._id) {
+                    data._id = autoinc;
+                    this.model.autoinc += 1;
+                }
                 if (this.model.rows[data._id]) {
                     return Util.error("ReactNativeStore error: Storage already contains _id '" + data._id + "'");
                 }
