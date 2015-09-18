@@ -47,16 +47,15 @@ class Model {
         await this.initModel();
         return new Promise(async(resolve, reject) => {
             try {
-                var autoinc = this.model.autoinc;
-                if (!data._id) {
-                    data._id = autoinc;
-                    this.model.autoinc += 1;
+                var autoinc = this.model.autoinc++;
+                if (this.model.rows[autoinc]) {
+                    return Util.error("ReactNativeStore error: Storage already contains _id '" + autoinc + "'");
                 }
-                if (this.model.rows[data._id]) {
-                    return Util.error("ReactNativeStore error: Storage already contains _id '" + data._id + "'");
+                if(data._id){
+                    return Util.error("ReactNativeStore error: Don't need _id with add method");
                 }
-                this.model.rows[data._id] = data;
-                this.model.totalrows += 1;
+                this.model.rows[autoinc] = data;
+                this.model.totalrows++;
 
                 this.database[this.modelName] = this.model;
                 await AsyncStorage.setItem(this.dbName, JSON.stringify(this.database));
