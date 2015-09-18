@@ -1,6 +1,6 @@
 {
     "name": "react-native-store",
-    "version": "0.0.7",
+    "version": "0.0.8",
     "description": "A simple database base on react-native AsyncStorage.",
     "main": "./libs/index.js",
     "scripts": {},
