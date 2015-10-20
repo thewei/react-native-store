@@ -56,6 +56,7 @@ class Model {
                 }
                 this.model.rows[autoinc] = data;
                 this.model.totalrows++;
+                data._id = autoinc;
 
                 this.database[this.modelName] = this.model;
                 await AsyncStorage.setItem(this.dbName, JSON.stringify(this.database));
