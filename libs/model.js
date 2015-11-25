@@ -43,7 +43,7 @@ class Model {
     }
 
     // add
-    async add(data, filter) {
+    async add(data) {
         await this.initModel();
         return new Promise(async(resolve, reject) => {
             try {
@@ -54,9 +54,9 @@ class Model {
                 if(data._id){
                     return Util.error("ReactNativeStore error: Don't need _id with add method");
                 }
+                data._id = autoinc;
                 this.model.rows[autoinc] = data;
                 this.model.totalrows++;
-                data._id = autoinc;
 
                 this.database[this.modelName] = this.model;
                 await AsyncStorage.setItem(this.dbName, JSON.stringify(this.database));
