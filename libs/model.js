@@ -43,7 +43,7 @@ class Model {
     }
 
     // add
-    async add(data) {
+    async add(data, filter) {
         await this.initModel();
         return new Promise(async(resolve, reject) => {
             try {
