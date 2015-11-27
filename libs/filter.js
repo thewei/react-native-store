@@ -1,6 +1,22 @@
 'use strict'
 
 class Filter {
+    constructor() {
+        this.comparisonOperators = [
+            'gt',
+            'gte',
+            'lt',
+            'lte',
+            'between',
+            'inq',
+            'nin',
+            'regexp'
+        ];
+        this.logicalOperators = [
+            'and',
+            'or'
+        ];
+    }
 
     apply(set, settings) { 
         var where = settings.where || {}; 
@@ -10,9 +26,10 @@ class Filter {
         var limit = settings.limit; 
         var result = [];
         //Elements that satisfy where filter
-        for(var element in set) {
-            if(this.checkWhere(set[element], where))
-                result.push(this.applyFieldsFilter(set[element], fields));
+        for(var i in set) {
+            var element = set[i];
+            if(this.evaluate(where, element))
+                result.push(this.applyFieldsFilter(element, fields));
         }
         //Found a lot of conflicting info on whether Array.sort() is stable,
         //but in testing so far it seems to be.
@@ -41,40 +58,79 @@ class Filter {
        return result; 
     }
 
-    checkWhere(element, where) {
-        var whereKeys = Object.keys(where);
-        for(var key in whereKeys) {
-            var filterVal = where[whereKeys[key]];
-            var elementVal = element[whereKeys[key]] || null;
-            console.log(this.objectEquals(filterVal, elementVal))
-            if(!elementVal || !this.objectEquals(filterVal, elementVal))
-                return false;
-        }
-        return true;
-    }
-
-    objectEquals(a, b) {
-        if(typeof a === 'object' && typeof b === 'object') {
-            var bKeys = Object.keys(b);
-            for(var key in bKeys) {
-                if(!a.hasOwnProperty(bKeys[key]) || typeof a[bKeys[key]] !== typeof b[bKeys[key]])
-                    return false;
-            }
-            var aKeys = Object.keys(a);
-            for(var key in aKeys) {
-                if(!b.hasOwnProperty(aKeys[key]) || typeof a[aKeys[key]] !== typeof b[aKeys[key]]) 
-                    return false;
-            }
-            for(var key in aKeys) {
-                var val = a[aKeys[key]]
-                if(!this.objectEquals(val, b[aKeys[key]]))
+    evaluate(filter, element) {
+        console.log('evaluating:')
+        console.log(filter);
+        console.log(element);
+        var filterKeys = Object.keys(filter);
+        if(typeof filter == 'object') {
+            for(var i in filterKeys) {
+                var key = filterKeys[i];
+                //key is either a property name, or logical operator
+                if(this.logicalOperators.indexOf(key) > -1) {
+                    if(!this.evaluateLogicalOperator(key, filter[key], element))
+                        return false;
+                } else if(this.comparisonOperators.indexOf(key) > -1) {
+                    if(!this.evaluateComparisonOperator(key, filter[key], element))
+                        return false
+                } else if(typeof filter[key] == 'object') { 
+                    if(!this.evaluate(filter[key], element[key]))
+                        return false;
+                } else if(filter[key] != element[key])
                     return false;
             }
             return true;
-        } else
-            return a === b;
+        }
+        //It technically should never reach here, but just to be safe
+        return a == b;
     }
-    
+
+    evaluateLogicalOperator(operator, filter, element) {
+        console.log('logic:')
+        console.log(filter);
+        console.log(operator);
+        console.log(element);
+        if(operator == 'and') {
+            for(var i in filter) {
+                var comp = filter[i];
+                if(!this.evaluate(comp, element)) return false;
+            }
+            return true;
+        } else if(operator == 'or') {
+            for(var i in filter) {
+                var comp = filter[i];
+                if(this.evaluate(comp, element)) return true;
+            }
+        }
+        return false;
+    }
+
+    evaluateComparisonOperator(operator, filter, element) {
+        console.log('comparing:')
+        console.log(element);
+        console.log(operator);
+        console.log(filter);
+        if(operator == 'gt')
+            return element > filter;
+        else if(operator == 'gte')
+            return element >= filter;
+        else if(operator == 'lt')
+            return element < filter;
+        else if(operator == 'lte')
+            return element <= filter;
+        else if(operator == 'between' && filter[0] != null && filter[1] != null)
+            return element >= filter[0] && element <= filter[1];
+        else if(operator == 'inq')
+            return filter.indexOf(element) > -1 ? true : false;
+        else if(operator == 'nin')
+            return filter.indexOf(element) > -1 ? false : true;
+        else if(operator == 'regexp') {
+            var regexper = typeof filter == 'object' ? filter : new RegExp(filter, 'i');
+            return regexper.exec(element) == null ? false : true;
+        }
+        return false;
+    }
+
     applyFieldsFilter(element, fields) {
         //Fields filter will exclude all keys from the element for which there
         //is a corresponding key in the fields object with a value of false.
