@@ -4,6 +4,10 @@ A simple database base on react-native AsyncStorage.
 
 ***NOTE***: since v0.0.4, the API was changed!
 
+***NOTE***: since v0.1.1, better filtering has been added, changing the API!
+See the filtering section for more infomation. Queries using the previous form
+will be invalid!
+
 ### Installation
 ```bash
 $ npm install react-native-store --save
@@ -26,14 +30,52 @@ db_store
 - Model.add( data, filter )
 - Model.update( data, filter )
 - Model.remove( filter )
-- Model.find( filter, parmas )
-- Model.get( filter, parmas )
+- Model.find( filter )
+- Model.get( filter )
 
-### Simple example
+### Filtering
+
+Filtering adds more advanced logic to queries. This implementation is heavily
+based off of [LoopBack's implementation](https://docs.strongloop.com/display/public/LB/Querying+data#Queryingdata-Filters).
+However, there are some important things that are different/leftout:
+
+- The [include filter](https://docs.strongloop.com/display/public/LB/Include+filter) is not implemented as it is not relevant.
+- The [near and like/nlike](https://docs.strongloop.com/display/public/LB/Where+filter#Wherefilter-likeandnlike) operators are not implemented.
+- The [skip filter](https://docs.strongloop.com/display/public/LB/Skip+filter) in LoopBack is the offset filter in this implementation to
+  stay consistent with previous versions.
+
+**Note**: Query operations on object nested within an entry are not perfect.
+For example, trying to update an entry that looks something like this:
+
+```javascript
+{
+  location: { name: 'place', distance: 'far' }
+}
+```
+
+With this as the value of a where filter:
+
+```javascript
+{
+  location: { name: 'place' }
+}
+```
+
+Will overwrite the value of `location`, effectively removing the `distance` 
+property.
+This occurs similarly with the order and fields filter, as you can only apply
+the filters to values that are not nested within an object.
+
+### Examples
+
+See docs/test.js for a full code example.
+
+#### Simple example
 ```js
 var reactNativeStore = require('react-native-store');
 
-(async function(){
+var test = async function() {
+  //Get/Create model
   var userModel = await reactNativeStore.model("user");
 
   // Add Data
@@ -50,24 +92,37 @@ var reactNativeStore = require('react-native-store');
     username: "mary",
     age: 12
   },{
-    _id: 1
+    where: {
+      username: "tom"    
+    }
   });
-
   console.log(update_data);
 
-  //Remove Data
+  //Remove data with a filter
   var remove_data = await userModel.remove({
-    _id: 1
+    where: {
+      age: { lt: 15 }
+    }
   });
   console.log(remove_data);
+  //Remove all data (pass no where filter)
+  var remove_data = await userModelremove();
+  console.log(remove_data)
 
-  // search
-  var find_data = await userModel.find();
+  // search using advanced queries
+  var find_data = await userModel.find({
+    where: {
+      and: [{ username: { neq: 'tom' } }, { age: { gte: 40 } }]
+    },
+    order: {
+      age: 'ASC',
+
+    }
+  });
   console.log("find",find_data);
 
-});
+}
 ```
-
 ### Contributing
 - Fork this Repo first
 - Clone your Repo
@@ -100,5 +155,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 
 ---
+Filtering added by [terminull](https://github.com/terminull/react-native-store/tree/better-filter) v0.1.1
+
 ![docor]()
 built upon love by [docor](git+https://github.com/turingou/docor.git) v0.3.0

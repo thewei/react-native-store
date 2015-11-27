@@ -27,19 +27,19 @@ class Filter {
         var result = [];
         //Elements that satisfy where filter
         if(where != null) {
-			for(var i in set) {
-				var element = set[i];
-				//Empty filter includes everything
-				if(this.evaluate(where, element))
-					result.push(this.applyFieldsFilter(element, fields));
-			}
+            for(var i in set) {
+                var element = set[i];
+                //Empty filter includes everything
+                if(this.evaluate(where, element))
+                    result.push(this.applyFieldsFilter(element, fields));
+            }
         } else {
-        	//result needs to be in an array, set can be an object
-        	//so you cant just result = set
-        	for(var i in set) {
-				var element = set[i];
-				result.push(this.applyFieldsFilter(element, fields));
-        	}
+            //result needs to be in an array, set can be an object
+            //so you cant just result = set
+            for(var i in set) {
+                var element = set[i];
+                result.push(this.applyFieldsFilter(element, fields));
+            }
         }
         //Found a lot of conflicting info on whether Array.sort() is stable,
         //but in testing so far it seems to be.
@@ -109,7 +109,9 @@ class Filter {
     }
 
     evaluateComparisonOperator(operator, filter, element) {
-        if(operator == 'gt')
+        if(operator == 'neq')
+            return element != filter;
+        else if(operator == 'gt')
             return element > filter;
         else if(operator == 'gte')
             return element >= filter;
@@ -146,14 +148,14 @@ class Filter {
             if(fields[fieldKeys[key]] === true)
                 strict = true;
         }
-		//NOTE: This is only for react-native-storage, which needs a _id key
-		//to function correctly. If we are on strict mode, we must add in the
-		//_id key, if we are not, we much make sure that there is no false
-		//value for it	
-		if(strict)
-			fields._id = true;
-		else
-			delete fields._id;
+        //NOTE: This is only for react-native-storage, which needs a _id key
+        //to function correctly. If we are on strict mode, we must add in the
+        //_id key, if we are not, we much make sure that there is no false
+        //value for it  
+        if(strict)
+            fields._id = true;
+        else
+            delete fields._id;
         for(var key in elementKeys) {
             //Applying the above described behavior. Add the property if
             //we are being strict and the filter contains the key, or if

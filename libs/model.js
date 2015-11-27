@@ -78,20 +78,20 @@ class Model {
             try {
                 var results = [];
                 var rows = this.model["rows"];
-				var filterResult = this.modelFilter.apply(rows, filter) 
-				for (var row in rows) {
-					for (var element in filterResult) {
-						if (rows[row]['_id'] === filterResult[element]['_id']) {
-							for (var i in data) {
-								rows[row][i] = data[i];
-							}
-							results.push(rows[row]);
-							this.database[this.modelName] = this.model;
-							await AsyncStorage.setItem(this.dbName, JSON.stringify(this.database));
-						}
-					}
-				}
-				results.length ? resolve(results) : resolve(null);
+                var filterResult = this.modelFilter.apply(rows, filter) 
+                for (var row in rows) {
+                    for (var element in filterResult) {
+                        if (rows[row]['_id'] === filterResult[element]['_id']) {
+                            for (var i in data) {
+                                rows[row][i] = data[i];
+                            }
+                            results.push(rows[row]);
+                            this.database[this.modelName] = this.model;
+                            await AsyncStorage.setItem(this.dbName, JSON.stringify(this.database));
+                        }
+                    }
+                }
+                results.length ? resolve(results) : resolve(null);
             } catch (error) {
                 Util.error('ReactNativeStore error: ' + error.message);
             }
@@ -105,24 +105,24 @@ class Model {
         return new Promise(async(resolve, reject) => {
             try {
                 var results = [];
-				var rowsToDelete = [];
+                var rowsToDelete = [];
                 var rows = this.model["rows"];
-				var filterResult = this.modelFilter.apply(rows, filter) 
-				for (var row in rows) {
-					for (var element in filterResult) {
-						if (rows[row]['_id'] === filterResult[element]['_id'])
-							rowsToDelete.push(row);
-					}
-				}
-				for(var i in rowsToDelete) {
-					var row = rowsToDelete[i];
-					results.push(this.model["rows"][row]);
-					delete this.model["rows"][row];
-					this.model["totalrows"]--;
-				}
-				this.database[this.modelName] = this.model;
-				await AsyncStorage.setItem(this.dbName, JSON.stringify(this.database));
-				results.length ? resolve(results) : resolve(null);
+                var filterResult = this.modelFilter.apply(rows, filter) 
+                for (var row in rows) {
+                    for (var element in filterResult) {
+                        if (rows[row]['_id'] === filterResult[element]['_id'])
+                            rowsToDelete.push(row);
+                    }
+                }
+                for(var i in rowsToDelete) {
+                    var row = rowsToDelete[i];
+                    results.push(this.model["rows"][row]);
+                    delete this.model["rows"][row];
+                    this.model["totalrows"]--;
+                }
+                this.database[this.modelName] = this.model;
+                await AsyncStorage.setItem(this.dbName, JSON.stringify(this.database));
+                results.length ? resolve(results) : resolve(null);
             } catch (error) {
                 Util.error('ReactNativeStore error: ' + error.message);
             }
@@ -136,8 +136,8 @@ class Model {
         return new Promise((resolve, reject) => {
             var results = [];
             var rows = this.model["rows"];
-			results = this.modelFilter.apply(rows, filter);
-			results.length ? resolve(results) : resolve(null);
+            results = this.modelFilter.apply(rows, filter);
+            results.length ? resolve(results) : resolve(null);
         });
     }
 
