@@ -19,17 +19,27 @@ class Filter {
     }
 
     apply(set, settings) { 
-        var where = settings.where || {}; 
+        var where = settings.where || null; 
         var fields = settings.fields || {}; 
         var order = settings.order || {}; 
         var offset = settings.offset || 0; 
         var limit = settings.limit; 
         var result = [];
         //Elements that satisfy where filter
-        for(var i in set) {
-            var element = set[i];
-            if(this.evaluate(where, element))
-                result.push(this.applyFieldsFilter(element, fields));
+        if(where != null) {
+			for(var i in set) {
+				var element = set[i];
+				//Empty filter includes everything
+				if(this.evaluate(where, element))
+					result.push(this.applyFieldsFilter(element, fields));
+			}
+        } else {
+        	//result needs to be in an array, set can be an object
+        	//so you cant just result = set
+        	for(var i in set) {
+				var element = set[i];
+				result.push(this.applyFieldsFilter(element, fields));
+        	}
         }
         //Found a lot of conflicting info on whether Array.sort() is stable,
         //but in testing so far it seems to be.
@@ -59,9 +69,6 @@ class Filter {
     }
 
     evaluate(filter, element) {
-        console.log('evaluating:')
-        console.log(filter);
-        console.log(element);
         var filterKeys = Object.keys(filter);
         if(typeof filter == 'object') {
             for(var i in filterKeys) {
@@ -86,10 +93,6 @@ class Filter {
     }
 
     evaluateLogicalOperator(operator, filter, element) {
-        console.log('logic:')
-        console.log(filter);
-        console.log(operator);
-        console.log(element);
         if(operator == 'and') {
             for(var i in filter) {
                 var comp = filter[i];
@@ -106,10 +109,6 @@ class Filter {
     }
 
     evaluateComparisonOperator(operator, filter, element) {
-        console.log('comparing:')
-        console.log(element);
-        console.log(operator);
-        console.log(filter);
         if(operator == 'gt')
             return element > filter;
         else if(operator == 'gte')
@@ -147,6 +146,14 @@ class Filter {
             if(fields[fieldKeys[key]] === true)
                 strict = true;
         }
+		//NOTE: This is only for react-native-storage, which needs a _id key
+		//to function correctly. If we are on strict mode, we must add in the
+		//_id key, if we are not, we much make sure that there is no false
+		//value for it	
+		if(strict)
+			fields._id = true;
+		else
+			delete fields._id;
         for(var key in elementKeys) {
             //Applying the above described behavior. Add the property if
             //we are being strict and the filter contains the key, or if
@@ -160,4 +167,4 @@ class Filter {
     }
 }
 
-module.exports = new Filter();
+module.exports = Filter;
