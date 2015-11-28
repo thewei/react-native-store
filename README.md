@@ -2,11 +2,9 @@
 
 A simple database base on react-native AsyncStorage.
 
-***NOTE***: since v0.0.4, the API was changed!
+***NOTE***: since v0.2.0, better filtering has been added! See the filtering section for more infomation. Queries using the previous form will be invalid!
 
-***NOTE***: since v0.1.1, better filtering has been added, changing the API!
-See the filtering section for more infomation. Queries using the previous form
-will be invalid!
+The new filtering added by [terminull](https://github.com/terminull/react-native-store/tree/better-filter) v0.1.1
 
 ### Installation
 ```bash
@@ -155,7 +153,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 
 ---
-Filtering added by [terminull](https://github.com/terminull/react-native-store/tree/better-filter) v0.1.1
 
 ![docor]()
 built upon love by [docor](git+https://github.com/turingou/docor.git) v0.3.0
