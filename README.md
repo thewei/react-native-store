@@ -104,7 +104,7 @@ var test = async function() {
   });
   console.log(remove_data);
   //Remove all data (pass no where filter)
-  var remove_data = await userModelremove();
+  var remove_data = await userModel.remove();
   console.log(remove_data)
 
   // search using advanced queries
