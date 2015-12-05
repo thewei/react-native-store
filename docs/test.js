@@ -22,6 +22,9 @@ class Test {
             await this.init();
             await this.findTest();
             await this.updateTest();
+            await this.findByIdTest();
+            await this.updateByIdTest();
+            await this.removeByIdTest();
             await this.removeTest();
             console.log('Test Complete!')
         } catch(error) {
@@ -72,6 +75,16 @@ class Test {
 
     }
 
+    async findByIdTest() {
+        // find last entered model (by id)
+        console.log('Start find by id test.');
+        // entries are removed each time but the autoinc index is
+        // not set. This is a work around to get this test working.
+        var index = this.model.database.test.autoinc;
+        var results = await this.model.findById(index - 1);
+        console.log(results);
+    }
+
     async updateTest() {
         //Update all entries with name having a value lexicographically less
         //than or equal to'f' to having price = 0
@@ -87,10 +100,26 @@ class Test {
         // { name: 'c', price: 0, location: { name: 'EU', coords: { lat: 423, lng: 123 }  } } ],
     }
 
+    async updateByIdTest() {
+        // update last entered model (by id)
+        console.log('Start update by id test.');
+        var index = this.model.database.test.autoinc;
+        var results = await this.model.updateById({name: 'z'}, index - 1);
+        console.log(results);
+    }
+
     async removeTest() {
         //Remove all data from this model. To include the whole database in
         //a filter, either pass no filter object or exclude the where property
         var results = await this.model.remove();
+        console.log(results);
+    }
+
+    async removeByIdTest() {
+        // remove last entered model (by id)
+        console.log('Start remove by id test.');
+        var index = this.model.database.test.autoinc;
+        var results = await this.model.removeById(index - 1);
         console.log(results);
     }
 }

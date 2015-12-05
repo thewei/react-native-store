@@ -98,6 +98,16 @@ class Model {
         });
     }
 
+    // remove a single entry by id
+    async updateById(data, id) {
+        var result = await this.update(data, {
+            where: {
+                _id: id
+            }
+        });
+        return result.pop();
+    }
+
     // remove
     async remove(filter) {
         await this.initModel();
@@ -129,6 +139,17 @@ class Model {
         });
     }
 
+
+    // remove a single entry by id
+    async removeById(id) {
+        var result = await this.remove({
+            where: {
+                _id: id
+            }
+        });
+        return result.pop();
+    }
+
     // find
     async find(filter) {
         await this.initModel();
@@ -139,6 +160,16 @@ class Model {
             results = this.modelFilter.apply(rows, filter);
             results.length ? resolve(results) : resolve(null);
         });
+    }
+
+    // find a single entry by id
+    async findById(id) {
+        var result = await this.find({
+            where: {
+                _id: id
+            }
+        });
+        return result.pop();
     }
 
     // get
