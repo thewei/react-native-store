@@ -27,8 +27,11 @@ db_store
 - Model( modelName )
 - Model.add( data, filter )
 - Model.update( data, filter )
+- Model.updateById( data, id )
 - Model.remove( filter )
+- Model.removeById( id )
 - Model.find( filter )
+- Model.findById( id )
 - Model.get( filter )
 
 ### Filtering
