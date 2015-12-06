@@ -1,4 +1,4 @@
-## react-native-store ![NPM version](https://img.shields.io/npm/v/react-native-store.svg?style=flat) [![NPM downloads](http://img.shields.io/npm/dm/react-native-store.svg?style=flat-square)](https://npmjs.org/package/react-native-store)
+## react-native-store ![NPM version](https://npmjs.org/package/react-native-store) [![NPM downloads](http://img.shields.io/npm/dm/react-native-store.svg?style=flat-square)](https://npmjs.org/package/react-native-store)
 
 A simple database base on react-native AsyncStorage.
 
