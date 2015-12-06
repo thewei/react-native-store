@@ -44,6 +44,14 @@ class Model {
         this.database[this.modelName] = this.database[this.modelName] || this.model;
     }
 
+    //destroy
+    async destroy() {
+        return new Promise(async(resolve, reject) => {
+            var database = await AsyncStorage.getItem(this.dbName);
+            resolve( database?await AsyncStorage.removeItem(this.dbName):null );
+        });
+    }
+
     // add
     async add(data) {
         await this.initModel();
@@ -105,7 +113,7 @@ class Model {
                 _id: id
             }
         });
-        return result.pop();
+        return (result && result[0]) || null;
     }
 
     // remove
@@ -147,7 +155,7 @@ class Model {
                 _id: id
             }
         });
-        return result.pop();
+        return (result && result[0]) || null;
     }
 
     // find
@@ -169,7 +177,7 @@ class Model {
                 _id: id
             }
         });
-        return result.pop();
+        return (result && result[0]) || null;
     }
 
     // get

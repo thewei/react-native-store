@@ -33,6 +33,7 @@ db_store
 - Model.find( filter )
 - Model.findById( id )
 - Model.get( filter )
+- Model.destroy()
 
 ### Filtering
 

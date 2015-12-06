@@ -24,6 +24,11 @@ class Store {
         });
     }
 
+    // clear store
+    async clear() {
+        await AsyncStorage.clear();
+    }
+
 }
 
 module.exports = Store;

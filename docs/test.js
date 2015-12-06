@@ -19,27 +19,37 @@ class Test {
 
     async startTest() {
         try {
+            console.info('=== start react-native-store test! ===')
+            await this.destroyModel();
             await this.init();
             await this.findTest();
-            await this.updateTest();
             await this.findByIdTest();
+            await this.updateTest();
             await this.updateByIdTest();
-            await this.removeByIdTest();
             await this.removeTest();
-            console.log('Test Complete!')
+            await this.removeByIdTest();
+            console.info('=== react-native-store test complete! ===')
         } catch(error) {
-            console.log(error);
+            console.error(error);
         }
 
     }
 
     async init() {
+        //clear storage
+        //reactNativeStore.clear();
         //Create/get model from storage
         this.model = await reactNativeStore.model('test');
         //Add our test data to storage
+        console.log("0. init data");
         for(var element in this.testDataSet) {
             await this.model.add(this.testDataSet[element]);
         }
+    }
+
+    async destroyModel() {
+        var model = await reactNativeStore.model('test');
+        await model.destroy();
     }
 
     async findTest() {
@@ -65,6 +75,7 @@ class Test {
             }
         }
         var results = await this.model.find(filter);
+        console.log("1. find method:");
         console.log(results);
         //Note that these objects will contain a _id property containing their
         //own unique id that can be used in a where filter
@@ -77,12 +88,16 @@ class Test {
 
     async findByIdTest() {
         // find last entered model (by id)
-        console.log('Start find by id test.');
         // entries are removed each time but the autoinc index is
         // not set. This is a work around to get this test working.
         var index = this.model.database.test.autoinc;
         var results = await this.model.findById(index - 1);
+        console.log("2. ①findById method:");
         console.log(results);
+
+        var results2 = await this.model.findById(46);
+        console.log("2. ②findById method (if data is null):");
+        console.log(results2);
     }
 
     async updateTest() {
@@ -94,6 +109,7 @@ class Test {
             }
         }
         var results = await this.model.update({ price: 0 }, filter);
+        console.log("3. update method:");
         console.log(results);
         //[{ name: 'a', price: 0, location: { name: 'USA', coords: { lat: 123, lng: 123 }  } },
         // { name: 'a', price: 0, location: { name: 'USA', coords: { lat: 123, lng: 123 }  } },
@@ -102,25 +118,34 @@ class Test {
 
     async updateByIdTest() {
         // update last entered model (by id)
-        console.log('Start update by id test.');
         var index = this.model.database.test.autoinc;
         var results = await this.model.updateById({name: 'z'}, index - 1);
+        console.log("4. ①updatedById method:");
         console.log(results);
+
+        var results2 = await this.model.updateById({name: 'z'}, 47);
+        console.log("4. ②updatedById method (if data is null):");
+        console.log(results2);
     }
 
     async removeTest() {
         //Remove all data from this model. To include the whole database in
         //a filter, either pass no filter object or exclude the where property
         var results = await this.model.remove();
+        console.log("5. remove method:");
         console.log(results);
     }
 
     async removeByIdTest() {
         // remove last entered model (by id)
-        console.log('Start remove by id test.');
         var index = this.model.database.test.autoinc;
         var results = await this.model.removeById(index - 1);
+        console.log("6. ①removeById method:");
         console.log(results);
+
+        var results2 = await this.model.removeById(48);
+        console.log("6. ②①removeById method (if data is null):");
+        console.log(results2);
     }
 }
 
