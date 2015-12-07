@@ -129,7 +129,7 @@ var test = async function() {
 - Fork this Repo first
 - Clone your Repo
 - Install dependencies by `$ npm install`
-- Checkout a feature branch
+- Checkout develop branch
 - Feel free to add your features
 - Make sure your features are fully tested
 - Publish your local branch, Open a pull request
