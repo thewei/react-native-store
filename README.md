@@ -113,6 +113,7 @@ var test = async function() {
 
   // fetch all
   var all_data = await userModel.find();
+  console.log(all_data);
 
   // search using advanced queries
   var find_data = await userModel.find({
