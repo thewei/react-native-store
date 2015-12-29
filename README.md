@@ -111,6 +111,10 @@ var test = async function() {
   var remove_data = await userModel.remove();
   console.log(remove_data)
 
+  // fetch all
+  var all_data = await userModel.find();
+  console.log(all_data);
+
   // search using advanced queries
   var find_data = await userModel.find({
     where: {
