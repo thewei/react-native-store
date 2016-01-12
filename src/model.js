@@ -76,6 +76,32 @@ class Model {
         });
     }
 
+    // multi add
+    async multiAdd(data) {
+        await this.initModel();
+        return new Promise(async(resolve, reject) => {
+            try {
+                data.forEach(function(value, index){
+                    var autoinc = this.model.autoinc++;
+                    if (this.model.rows[autoinc]) {
+                        return Util.error("ReactNativeStore error: Storage already contains _id '" + autoinc + "'");
+                    }
+                    if(data._id){
+                        return Util.error("ReactNativeStore error: Don't need _id with add method");
+                    }
+                    value._id = autoinc;
+                    this.model.rows[autoinc] = value;
+                    this.model.totalrows++;
+                });
+                this.database[this.modelName] = this.model;
+                await AsyncStorage.multiSet(this.dbName, JSON.stringify(this.database));
+                resolve(this.model.rows);
+            } catch (error) {
+                Util.error('ReactNativeStore error: ' + error.message);
+            }
+        });
+    }
+
     // update
     async update(data, filter) {
         await this.initModel();
