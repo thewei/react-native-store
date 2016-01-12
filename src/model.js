@@ -81,20 +81,21 @@ class Model {
         await this.initModel();
         return new Promise(async(resolve, reject) => {
             try {
-                data.forEach(function(value, index){
+                for(var key in data) {
+                    var value = data[key];
                     var autoinc = this.model.autoinc++;
                     if (this.model.rows[autoinc]) {
                         return Util.error("ReactNativeStore error: Storage already contains _id '" + autoinc + "'");
                     }
-                    if(data._id){
+                    if(value._id){
                         return Util.error("ReactNativeStore error: Don't need _id with add method");
                     }
                     value._id = autoinc;
                     this.model.rows[autoinc] = value;
                     this.model.totalrows++;
-                });
+                }
                 this.database[this.modelName] = this.model;
-                await AsyncStorage.multiSet(this.dbName, JSON.stringify(this.database));
+                await AsyncStorage.setItem(this.dbName, JSON.stringify(this.database));
                 resolve(this.model.rows);
             } catch (error) {
                 Util.error('ReactNativeStore error: ' + error.message);
