@@ -13,6 +13,8 @@
     "beforeEach": false,
     "afterEach": false,
     "module": false,
-    "inject": false
+    "inject": false,
+    "async": false,
+    "await": false
   }
 }
