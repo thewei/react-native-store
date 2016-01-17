@@ -1,0 +1,20 @@
+{
+  "esnext": true,
+  "globalstrict": true,
+  "globals": {
+    "require": false,
+    "window": false,
+    "jest": false,
+    "angular": false,
+    "describe": false,
+    "it": false,
+    "pit": false,
+    "expect": false,
+    "beforeEach": false,
+    "afterEach": false,
+    "module": false,
+    "inject": false,
+    "async": false,
+    "await": false
+  }
+}
