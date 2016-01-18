@@ -1,4 +1,4 @@
-## react-native-store ![NPM version](https://img.shields.io/npm/v/react-native-store.svg?style=flat) [![NPM downloads](http://img.shields.io/npm/dm/react-native-store.svg?style=flat-square)](https://npmjs.org/package/react-native-store)
+## react-native-store [![Build Status](https://travis-ci.org/thewei/react-native-store.svg?branch=master)](https://travis-ci.org/thewei/react-native-store) ![NPM version](https://img.shields.io/npm/v/react-native-store.svg?style=flat) [![NPM downloads](http://img.shields.io/npm/dm/react-native-store.svg?style=flat-square)](https://npmjs.org/package/react-native-store)
 
 A simple database base on react-native AsyncStorage.
 
@@ -18,8 +18,8 @@ db_store
          |---totalrows (variable)
          |---autoinc (variable)
          |---rows (array)
-         	   |--- _id (number)
-         	   |--- ....
+                |--- _id (number)
+                |--- ....
 
 ```
 
@@ -63,7 +63,7 @@ With this as the value of a where filter:
 }
 ```
 
-Will overwrite the value of `location`, effectively removing the `distance` 
+Will overwrite the value of `location`, effectively removing the `distance`
 property.
 This occurs similarly with the order and fields filter, as you can only apply
 the filters to values that are not nested within an object.
