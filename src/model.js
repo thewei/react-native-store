@@ -33,11 +33,13 @@ class Model {
 
     async initModel() {
         this.database = await this.getDatabase();
-        this.model = this.database[this.modelName] ? this.database[this.modelName] : {
-            'totalrows': 0,
-            'autoinc': 1,
-            'rows': {}
-        };
+        this.model = this.database[this.modelName]
+            ? this.database[this.modelName]
+            : {
+                'totalrows': 0,
+                'autoinc': 1,
+                'rows': {}
+            };
         this.database[this.modelName] = this.database[this.modelName] || this.model;
     }
 
@@ -46,7 +48,9 @@ class Model {
         var me = this;
         return new Promise(async(resolve, reject) => {
             var database = await AsyncStorage.getItem(me.dbName);
-            resolve( database?await AsyncStorage.removeItem(me.dbName):null );
+            resolve(database
+                ? await AsyncStorage.removeItem(me.dbName)
+                : null);
         });
     }
 
@@ -60,7 +64,7 @@ class Model {
                 if (me.model.rows[autoinc]) {
                     return Util.error("ReactNativeStore error: Storage already contains _id '" + autoinc + "'");
                 }
-                if(data._id){
+                if (data._id) {
                     return Util.error("ReactNativeStore error: Don't need _id with add method");
                 }
                 data._id = autoinc;
@@ -81,13 +85,13 @@ class Model {
         await this.initModel();
         return new Promise(async(resolve, reject) => {
             try {
-                for(var key in data) {
+                for (var key in data) {
                     var value = data[key];
                     var autoinc = me.model.autoinc++;
                     if (me.model.rows[autoinc]) {
                         return Util.error("ReactNativeStore error: Storage already contains _id '" + autoinc + "'");
                     }
-                    if(value._id){
+                    if (value._id) {
                         return Util.error("ReactNativeStore error: Don't need _id with add method");
                     }
                     value._id = autoinc;
@@ -108,7 +112,7 @@ class Model {
         var me = this;
         await this.initModel();
         filter = filter || {};
-        if(data._id)
+        if (data._id)
             delete data._id;
         return new Promise(async(resolve, reject) => {
             try {
@@ -127,7 +131,9 @@ class Model {
                         }
                     }
                 }
-                results.length ? resolve(results) : resolve(null);
+                results.length
+                    ? resolve(results)
+                    : resolve(null);
             } catch (error) {
                 Util.error('ReactNativeStore error: ' + error.message);
             }
@@ -144,9 +150,9 @@ class Model {
         });
 
         return new Promise(async(resolve, reject) => {
-            if(result){
+            if (result) {
                 resolve(result[0])
-            }else{
+            } else {
                 resolve(null)
             }
         });
@@ -167,9 +173,9 @@ class Model {
                     for (var element in filterResult) {
                         if (rows[row]['_id'] === filterResult[element]['_id'])
                             rowsToDelete.push(row);
+                        }
                     }
-                }
-                for(var i in rowsToDelete) {
+                for (var i in rowsToDelete) {
                     var row = rowsToDelete[i];
                     results.push(me.model["rows"][row]);
                     delete me.model["rows"][row];
@@ -177,13 +183,14 @@ class Model {
                 }
                 me.database[me.modelName] = me.model;
                 await AsyncStorage.setItem(me.dbName, JSON.stringify(me.database));
-                results.length ? resolve(results) : resolve(null);
+                results.length
+                    ? resolve(results)
+                    : resolve(null);
             } catch (error) {
                 Util.error('ReactNativeStore error: ' + error.message);
             }
         });
     }
-
 
     // remove a single entry by id
     async removeById(id) {
@@ -194,9 +201,9 @@ class Model {
         });
 
         return new Promise(async(resolve, reject) => {
-            if(result){
+            if (result) {
                 resolve(result[0])
-            }else{
+            } else {
                 resolve(null)
             }
         });
@@ -212,7 +219,9 @@ class Model {
             var results = [];
             var rows = me.model["rows"];
             results = me.modelFilter.apply(rows, filter);
-            results.length ? resolve(results) : resolve(null);
+            results.length
+                ? resolve(results)
+                : resolve(null);
         });
     }
 
@@ -225,9 +234,9 @@ class Model {
         });
 
         return new Promise(async(resolve, reject) => {
-            if(result){
+            if (result) {
                 resolve(result[0])
-            }else{
+            } else {
                 resolve(null)
             }
         });

@@ -4,9 +4,7 @@ var React = require('react-native');
 var Model = require('./model.js');
 var Util = require('./util.js');
 
-var {
-    AsyncStorage
-} = React;
+var {AsyncStorage} = React;
 
 class Store {
 
@@ -32,6 +30,5 @@ class Store {
 }
 
 module.exports = Store;
-
 
 // Store.model("user").get({ id:1 },{fite}).then().fail();
