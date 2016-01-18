@@ -3,8 +3,17 @@ notifications:
   email:
   - ythewei@gmail.com
 node_js:
-  - "4.1"
+- '4.1'
 install:
-  - npm install
+- npm install
 script:
-  - npm test
+- npm test
+deploy:
+  provider: npm
+  email: thewei@99is.com
+  api_key:
+    secure: cmbuhuBcGQgSWP1unBnnRRLEulVww5PkwwhA3CtijaI1556o5Wh90Q6HdM3YmKRuTlvOO2HggYcnUFXrPt9insntxztcVULLKeF1hQ1V1pVgJqxcbq4AkKVxtmP9nU9e34iyEQQpwjD8NDfdNVywgeHN/TLBRiBzCs5PesmKkvr9pv6JBjJiKCrqmd41L4QSVOSYRvc77aD2ZlHOvTKT17HUDDjwDdoQTD+OnD6DMKQ2GbqsMFBvqd4WEioWtOAZbIAwblq5uol5E/TltwkfRk3gXFzxpRDVUXM5DvbIcoMze7AX/aVdh9ZjkzSPaWaPMdD10W90T2vyZeSf8T6ZHga6Kla3sYo5rP3AkDeU+IGSgZn3c9KY5jhA0RM8CncDtwrkxYs1V/RnhHNduORVP75WuxjcAvlcg78QaT1mmRdxlq5OXzMypEpbAKbZR9fyVvhGU0wlmpg5La1T0WJXsiJbWY3Dft26pEsgId8qJaBcqaCtGifhGbx+QGk0ihTIk/mY2dLGQQ26B790PGLmriQjHcOzEi+HsqNPtXpnQtVTCgnGDdmaZ0bVtKUeSSntD2DIxKwJQ1cTTJcd2lNFJF7savmB3an4tRWoaX/SMd7e231goJ54jUrjxzdcw7uQYZeF8f4QXsE9ElJk/V9Adze7e3A8r/QQhZM6rT5wUzM=
+  on:
+    branch: master
+    tags: true
+    repo: thewei/react-native-store

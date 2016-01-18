@@ -1,53 +1,51 @@
 {
-  "name": "react-native-store",
-  "version": "0.3.0",
-  "description": "A simple database base on react-native AsyncStorage.",
-  "main": "./src/index.js",
-  "scripts": {
-    "watch": "babel src --watch --stage 0 --out-dir libs",
-    "build": "babel src --stage 0 --out-dir libs",
-    "test": "jest --verbose"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/thewei/react-native-store.git"
-  },
-  "jest": {
-    "scriptPreprocessor": "<rootDir>/node_modules/babel-jest",
-    "testPathIgnorePatterns": [
-      "/node_modules/"
+    "name": "react-native-store",
+    "version": "0.3.0",
+    "description": "A simple database base on react-native AsyncStorage.",
+    "main": "./src/index.js",
+    "scripts": {
+        "test": "jest --verbose"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/thewei/react-native-store.git"
+    },
+    "jest": {
+        "scriptPreprocessor": "<rootDir>/node_modules/babel-jest",
+        "testPathIgnorePatterns": [
+            "/node_modules/"
+        ],
+        "testFileExtensions": [
+            "js"
+        ],
+        "testPathDirs": [
+            "src"
+        ],
+        "unmockedModulePathPatterns": [
+            "promise",
+            "source-map"
+        ]
+    },
+    "keywords": [
+        "react-component",
+        "react-native",
+        "ios",
+        "android",
+        "react",
+        "AsyncStorage",
+        "dataBase"
     ],
-    "testFileExtensions": [
-      "js"
-    ],
-    "testPathDirs": [
-      "src"
-    ],
-    "unmockedModulePathPatterns": [
-      "promise",
-      "source-map"
-    ]
-  },
-  "keywords": [
-    "react-component",
-    "react-native",
-    "ios",
-    "android",
-    "react",
-    "AsyncStorage",
-    "dataBase"
-  ],
-  "author": "thewei",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/thewei/react-native-store/issues"
-  },
-  "homepage": "https://github.com/thewei/react-native-store",
-  "devDependencies": {
-    "babel-jest": "^6.0.1",
-    "babel-preset-stage-0": "^6.3.13",
-    "jest": "^0.1.40",
-    "jest-cli": "^0.8.2",
-    "react-native": "^0.18.0-rc"
-  }
+    "author": "thewei",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/thewei/react-native-store/issues"
+    },
+    "homepage": "https://github.com/thewei/react-native-store",
+    "devDependencies": {
+        "babel-jest": "^6.0.1",
+        "babel-preset-stage-0": "^6.3.13",
+        "jest": "^0.1.40",
+        "jest-cli": "^0.8.2",
+        "react-native": "^0.18.0-rc"
+    }
 }
