@@ -31,6 +31,11 @@ var mock = {
             resolve(cache = {});
         });
     }),
+		getAllKeys: jest.genMockFunction().mockImplementation(() => {
+				return new Promise((resolve, reject) => {
+						resolve(Object.keys(cache));
+				});
+		}),
     _forceClear() {
         cache = {};
     }
