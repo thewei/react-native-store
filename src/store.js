@@ -10,18 +10,24 @@ class Store {
         this.dbName = opts.dbName;
     }
 
+    async _getCurrentVersion(versionKey) {
+        var currentVersion = await AsyncStorage.getItem(versionKey);
+        currentVersion = currentVersion || 0;
+        return parseFloat(currentVersion);
+    }
+
     async migrate() {
         var migrations = require('./migrations.js');
         var versionKey = `${this.dbName}_version`;
-        await currentVerion = AsyncStorage.getItem(versionKey);
+        var currentVersion = await this._getCurrentVersion(versionKey);
         var target = migrations.slice(-1)[0];
-        if(currentVerion == target.version)
+        if(currentVersion == target.version)
             return;
         for(let migration of migrations) {
-            if(migration.version <= currentVerion)
+            if(migration.version <= currentVersion)
                 continue;
             migration.perform();
-            await AsyncStorage.setItem(versionKey, migration.version);
+            await AsyncStorage.setItem(versionKey, migration.version.toString());
         }
     }
 

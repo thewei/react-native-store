@@ -9,6 +9,8 @@ var cache = {};
 var mock = {
     setItem: jest.genMockFunction().mockImplementation((key, value) => {
         return new Promise((resolve, reject) => {
+            if(typeof key !== 'string' || typeof value !== 'string')
+                reject(new Error('key and value must be string'));
             resolve(cache[key] = value);
         });
     }),
