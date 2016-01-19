@@ -24,16 +24,16 @@ db_store
 ```
 
 ### API
-- Model( modelName )
-- Model.add( data, filter )
-- Model.update( data, filter )
-- Model.updateById( data, id )
-- Model.remove( filter )
-- Model.removeById( id )
-- Model.find( filter )
-- Model.findById( id )
-- Model.get( filter )
-- Model.destroy()
+- **Model( modelName )** : returns a `Model` object
+- **Model.add( data, filter )** : returns a `promise` object
+- **Model.update( data, filter )** : returns a `promise` object
+- **Model.updateById( data, id )** : returns a `promise` object
+- **Model.remove( filter )** : returns a `promise` object
+- **Model.removeById( id )** : returns a `promise` object
+- **Model.find( filter )** : returns a `promise` object
+- **Model.findById( id )** : returns a `promise` object
+- **Model.get( filter )** : returns a `promise` object
+- **Model.destroy()** : returns a `promise` object
 
 ### Filtering
 
@@ -78,7 +78,7 @@ var reactNativeStore = require('react-native-store');
 
 var test = async function() {
   //Get/Create model
-  var userModel = await reactNativeStore.model("user");
+  var userModel = reactNativeStore.model("user");
 
   // Add Data
   var add_data = await userModel.add({

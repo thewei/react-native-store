@@ -17,11 +17,9 @@ describe('store Tests', function() {
     });
 
     pit('should create model', function() {
-        var model;
-        return Store.model('newModel')
-            .then(resp => model = resp)
-            .then(() => model.add({foo: 'bar'}))
-            .then(astore.getAllKeys)
+        var model = Store.model('newModel');
+        return model.add({foo: 'bar'})
+            .then(() => astore.getAllKeys())
             .then(keys => {
                 return expect(keys).toEqual(['react-native-store']);
             });
@@ -29,11 +27,9 @@ describe('store Tests', function() {
 
     pit('should clear only react-native-store created keys', function() {
         astore.setItem('SomeOtherLibrary', 'Foobar');
-        var model;
-        return Store.model('newModel')
-            .then(resp => model = resp)
-            .then(() => model.add({foo: 'bar'}))
-            .then(astore.getAllKeys)
+        var model = Store.model('newModel');
+        return model.add({foo: 'bar'})
+            .then(() => astore.getAllKeys())
             .then(keys => {
                 return expect(keys).toEqual(['SomeOtherLibrary', 'react-native-store']);
             })
