@@ -11,10 +11,13 @@ The new filtering added by [terminull](https://github.com/terminull/react-native
 $ npm install react-native-store --save
 ```
 
+***Upgrading from previous version?*** Check for [breaking-changes](breaking-changes.md).
+
+
 ### Data anatomy
 ```
 db_store
-   |---table_name
+   |---model_name
          |---totalrows (variable)
          |---autoinc (variable)
          |---rows (array)
@@ -24,16 +27,16 @@ db_store
 ```
 
 ### API
-- Model( modelName )
-- Model.add( data, filter )
-- Model.update( data, filter )
-- Model.updateById( data, id )
-- Model.remove( filter )
-- Model.removeById( id )
-- Model.find( filter )
-- Model.findById( id )
-- Model.get( filter )
-- Model.destroy()
+- **Model( modelName )** : returns a `Model` object
+- **Model.add( data, filter )** : returns a `promise` object
+- **Model.update( data, filter )** : returns a `promise` object
+- **Model.updateById( data, id )** : returns a `promise` object
+- **Model.remove( filter )** : returns a `promise` object
+- **Model.removeById( id )** : returns a `promise` object
+- **Model.find( filter )** : returns a `promise` object
+- **Model.findById( id )** : returns a `promise` object
+- **Model.get( filter )** : returns a `promise` object
+- **Model.destroy()** : returns a `promise` object
 
 ### Filtering
 
@@ -68,66 +71,44 @@ property.
 This occurs similarly with the order and fields filter, as you can only apply
 the filters to values that are not nested within an object.
 
-### Examples
-
-See docs/test.js for a full code example.
 
 #### Simple example
+
 ```js
 var reactNativeStore = require('react-native-store');
 
-var test = async function() {
-  //Get/Create model
-  var userModel = await reactNativeStore.model("user");
-
-  // Add Data
-  var add_data = await userModel.add({
-    username: "tom",
-    age: 12,
-    sex: "man"
-  });
-  // return object or null
-  console.log(add_data);
-
-  // Update Data
-  var update_data = await userModel.update({
-    username: "mary",
-    age: 12
-  },{
-    where: {
-      username: "tom"    
-    }
-  });
-  console.log(update_data);
-
-  //Remove data with a filter
-  var remove_data = await userModel.remove({
-    where: {
-      age: { lt: 15 }
-    }
-  });
-  console.log(remove_data);
-  //Remove all data (pass no where filter)
-  var remove_data = await userModel.remove();
-  console.log(remove_data)
-
-  // fetch all
-  var all_data = await userModel.find();
-  console.log(all_data);
-
-  // search using advanced queries
-  var find_data = await userModel.find({
-    where: {
-      and: [{ username: { neq: 'tom' } }, { age: { gte: 40 } }]
-    },
-    order: {
-      age: 'ASC',
-
-    }
-  });
-  console.log("find",find_data);
-
+var DB = {
+    'foo': new reactNativeStore.model('foo'),
+    'bar': new reactNativeStore.model('bar')
 }
+
+// somewhere inside react components
+
+componentDidMount: function() {
+    // Return all items
+    DB.foo.find().then(resp => this.setState({items: resp}));
+}
+
+handleFilter: function(itemName) {
+    DB.foo.find({
+        where: {
+            and: [{ foo: { neq: itemName } }, { age: { gte: 5 } }]
+        },
+        order: {
+            age: 'ASC',
+        }
+    }).then(resp => this.setState({items: resp}));
+}
+
+handleOnPress: function() {
+    DB.bar.add({
+        foo: 'foo',
+        bar: 'bar',
+        age: 12
+    });
+}
+
+
 ```
 ### Contributing
 - Fork this Repo first
