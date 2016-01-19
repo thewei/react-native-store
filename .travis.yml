@@ -1,3 +1,4 @@
+sudo: required
 language: node_js
 notifications:
   email:
@@ -9,7 +10,7 @@ install:
 script:
 - npm test
 before_deploy:
-- npm run build
+- npm run build && rm -rf .babelrc
 deploy:
   provider: npm
   email: thewei@99is.com
