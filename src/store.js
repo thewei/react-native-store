@@ -32,14 +32,7 @@ class Store {
     }
 
     async model(modelName) {
-        var me = this;
-        return new Promise(async(resolve, reject) => {
-            try {
-                return resolve(new Model(modelName, me.dbName));
-            } catch (error) {
-                Util.error('ReactNativeStore error: ' + error.message);
-            }
-        });
+        return new Model(modelName, this.dbName);
     }
 
     // clear store
