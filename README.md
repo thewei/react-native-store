@@ -35,41 +35,7 @@ db_store
 - **Model.get( filter )** : returns a `promise` object
 - **Model.destroy()** : returns a `promise` object
 
-### Filtering
-
-Filtering adds more advanced logic to queries. This implementation is heavily
-based off of [LoopBack's implementation](https://docs.strongloop.com/display/public/LB/Querying+data#Queryingdata-Filters).
-However, there are some important things that are different/leftout:
-
-- The [include filter](https://docs.strongloop.com/display/public/LB/Include+filter) is not implemented as it is not relevant.
-- The [near and like/nlike](https://docs.strongloop.com/display/public/LB/Where+filter#Wherefilter-likeandnlike) operators are not implemented.
-- The [skip filter](https://docs.strongloop.com/display/public/LB/Skip+filter) in LoopBack is the offset filter in this implementation to
-  stay consistent with previous versions.
-
-**Note**: Query operations on object nested within an entry are not perfect.
-For example, trying to update an entry that looks something like this:
-
-```javascript
-{
-  location: { name: 'place', distance: 'far' }
-}
-```
-
-With this as the value of a where filter:
-
-```javascript
-{
-  location: { name: 'place' }
-}
-```
-
-Will overwrite the value of `location`, effectively removing the `distance`
-property.
-This occurs similarly with the order and fields filter, as you can only apply
-the filters to values that are not nested within an object.
-
-
-#### Simple example
+### Simple example
 
 ```js
 var reactNativeStore = require('react-native-store');
@@ -105,8 +71,42 @@ handleOnPress: function() {
     });
 }
 
-
 ```
+
+### Advanced Filtering
+
+Filtering adds more advanced logic to queries. This implementation is heavily
+based off of [LoopBack's implementation](https://docs.strongloop.com/display/public/LB/Querying+data#Queryingdata-Filters).
+However, there are some important things that are different/leftout:
+
+- The [include filter](https://docs.strongloop.com/display/public/LB/Include+filter) is not implemented as it is not relevant.
+- The [near and like/nlike](https://docs.strongloop.com/display/public/LB/Where+filter#Wherefilter-likeandnlike) operators are not implemented.
+- The [skip filter](https://docs.strongloop.com/display/public/LB/Skip+filter) in LoopBack is the offset filter in this implementation to
+  stay consistent with previous versions.
+
+**Note**: Query operations on object nested within an entry are not perfect.
+For example, trying to update an entry that looks something like this:
+
+```javascript
+{
+  location: { name: 'place', distance: 'far' }
+}
+```
+
+With this as the value of a where filter:
+
+```javascript
+{
+  location: { name: 'place' }
+}
+```
+
+Will overwrite the value of `location`, effectively removing the `distance`
+property.
+This occurs similarly with the order and fields filter, as you can only apply
+the filters to values that are not nested within an object.
+
+
 ### Contributing
 - Fork this Repo first
 - Clone your Repo
