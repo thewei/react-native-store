@@ -31,7 +31,7 @@ class Store {
         }
     }
 
-    async model(modelName) {
+    model(modelName) {
         return new Model(modelName, this.dbName);
     }
 
