@@ -31,9 +31,8 @@ class Store {
         }
     }
 
-    model(modelName) {
-        var me = this;
-        return new Model(modelName, me.dbName);
+    async model(modelName) {
+        return new Model(modelName, this.dbName);
     }
 
     // clear store

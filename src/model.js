@@ -19,16 +19,12 @@ class Model {
     }
 
     async getDatabase() {
-        var me = this;
-        return new Promise(async(resolve, reject) => {
-            var database = await AsyncStorage.getItem(me.dbName);
-            if (database) {
-                resolve(Object.assign({}, JSON.parse(database)));
-            } else {
-                resolve(me.createDatabase());
-            }
-        });
-
+        var database = await AsyncStorage.getItem(this.dbName);
+        if (database) {
+            return Object.assign({}, JSON.parse(database));
+        } else {
+            return this.createDatabase();
+        }
     }
 
     async initModel() {
@@ -45,151 +41,106 @@ class Model {
 
     //destroy
     async destroy() {
-        var me = this;
-        return new Promise(async(resolve, reject) => {
-            var database = await AsyncStorage.getItem(me.dbName);
-            resolve(database
-                ? await AsyncStorage.removeItem(me.dbName)
-                : null);
-        });
+        var database = await AsyncStorage.getItem(this.dbName);
+        return database ? await AsyncStorage.removeItem(this.dbName) : null;
     }
 
     // add
     async add(data) {
-        var me = this;
         await this.initModel();
-        return new Promise(async(resolve, reject) => {
-            try {
-                var autoinc = me.model.autoinc++;
-                if (me.model.rows[autoinc]) {
-                    return Util.error("ReactNativeStore error: Storage already contains _id '" + autoinc + "'");
-                }
-                if (data._id) {
-                    return Util.error("ReactNativeStore error: Don't need _id with add method");
-                }
-                data._id = autoinc;
-                me.model.rows[autoinc] = data;
-                me.model.totalrows++;
-                me.database[me.modelName] = me.model;
-                await AsyncStorage.setItem(me.dbName, JSON.stringify(me.database));
-                resolve(me.model.rows[data._id]);
-            } catch (error) {
-                Util.error('ReactNativeStore error: ' + error.message);
-            }
-        });
+        var autoinc = this.model.autoinc++;
+        if (this.model.rows[autoinc]) {
+            return Util.error("ReactNativeStore error: Storage already contains _id '" + autoinc + "'");
+        }
+        if (data._id) {
+            return Util.error("ReactNativeStore error: Don't need _id with add method");
+        }
+        data._id = autoinc;
+        this.model.rows[autoinc] = data;
+        this.model.totalrows++;
+        this.database[this.modelName] = this.model;
+        await AsyncStorage.setItem(this.dbName, JSON.stringify(this.database));
+        return this.model.rows[data._id];
     }
 
     // multi add
     async multiAdd(data) {
-        var me = this;
         await this.initModel();
-        return new Promise(async(resolve, reject) => {
-            try {
-                for (var key in data) {
-                    var value = data[key];
-                    var autoinc = me.model.autoinc++;
-                    if (me.model.rows[autoinc]) {
-                        return Util.error("ReactNativeStore error: Storage already contains _id '" + autoinc + "'");
-                    }
-                    if (value._id) {
-                        return Util.error("ReactNativeStore error: Don't need _id with add method");
-                    }
-                    value._id = autoinc;
-                    me.model.rows[autoinc] = value;
-                    me.model.totalrows++;
-                }
-                me.database[me.modelName] = me.model;
-                await AsyncStorage.setItem(me.dbName, JSON.stringify(me.database));
-                resolve(me.model.rows);
-            } catch (error) {
-                Util.error('ReactNativeStore error: ' + error.message);
+        for (var key in data) {
+            var value = data[key];
+            var autoinc = this.model.autoinc++;
+            if (this.model.rows[autoinc]) {
+                return Util.error("ReactNativeStore error: Storage already contains _id '" + autoinc + "'");
             }
-        });
+            if (value._id) {
+                return Util.error("ReactNativeStore error: Don't need _id with add method");
+            }
+            value._id = autoinc;
+            this.model.rows[autoinc] = value;
+            this.model.totalrows++;
+        }
+        this.database[this.modelName] = this.model;
+        await AsyncStorage.setItem(this.dbName, JSON.stringify(this.database));
+        return this.model.rows;
     }
 
     // update
     async update(data, filter) {
-        var me = this;
         await this.initModel();
         filter = filter || {};
         if (data._id)
             delete data._id;
-        return new Promise(async(resolve, reject) => {
-            try {
-                var results = [];
-                var rows = me.model["rows"];
-                var filterResult = me.modelFilter.apply(rows, filter)
-                for (var row in rows) {
-                    for (var element in filterResult) {
-                        if (rows[row]['_id'] === filterResult[element]['_id']) {
-                            for (var i in data) {
-                                rows[row][i] = data[i];
-                            }
-                            results.push(rows[row]);
-                            me.database[me.modelName] = me.model;
-                            await AsyncStorage.setItem(me.dbName, JSON.stringify(me.database));
-                        }
+        var results = [];
+        var rows = this.model["rows"];
+        var filterResult = this.modelFilter.apply(rows, filter)
+        for (var row in rows) {
+            for (var element in filterResult) {
+                if (rows[row]['_id'] === filterResult[element]['_id']) {
+                    for (var i in data) {
+                        rows[row][i] = data[i];
                     }
+                    results.push(rows[row]);
+                    this.database[this.modelName] = this.model;
+                    await AsyncStorage.setItem(this.dbName, JSON.stringify(this.database));
                 }
-                results.length
-                    ? resolve(results)
-                    : resolve(null);
-            } catch (error) {
-                Util.error('ReactNativeStore error: ' + error.message);
             }
-        });
+        }
+        return results.length ? results : null;
     }
 
     // remove a single entry by id
     async updateById(data, id) {
-
         var result = await this.update(data, {
             where: {
                 _id: id
             }
         });
-
-        return new Promise(async(resolve, reject) => {
-            if (result) {
-                resolve(result[0])
-            } else {
-                resolve(null)
-            }
-        });
+        return result ? result[0] : null;
     }
 
     // remove
     async remove(filter) {
-        var me = this;
         await this.initModel();
         filter = filter || {};
-        return new Promise(async(resolve, reject) => {
-            try {
-                var results = [];
-                var rowsToDelete = [];
-                var rows = me.model["rows"];
-                var filterResult = me.modelFilter.apply(rows, filter)
-                for (var row in rows) {
-                    for (var element in filterResult) {
-                        if (rows[row]['_id'] === filterResult[element]['_id'])
-                            rowsToDelete.push(row);
-                        }
-                    }
-                for (var i in rowsToDelete) {
-                    var row = rowsToDelete[i];
-                    results.push(me.model["rows"][row]);
-                    delete me.model["rows"][row];
-                    me.model["totalrows"]--;
+        var results = [];
+        var rowsToDelete = [];
+        var rows = this.model["rows"];
+        var filterResult = this.modelFilter.apply(rows, filter)
+        for (var row in rows) {
+            for (var element in filterResult) {
+                if (rows[row]['_id'] === filterResult[element]['_id'])
+                    rowsToDelete.push(row);
                 }
-                me.database[me.modelName] = me.model;
-                await AsyncStorage.setItem(me.dbName, JSON.stringify(me.database));
-                results.length
-                    ? resolve(results)
-                    : resolve(null);
-            } catch (error) {
-                Util.error('ReactNativeStore error: ' + error.message);
             }
-        });
+        for (var i in rowsToDelete) {
+            var row = rowsToDelete[i];
+            results.push(this.model["rows"][row]);
+            delete this.model["rows"][row];
+            this.model["totalrows"]--;
+        }
+        this.database[this.modelName] = this.model;
+        await AsyncStorage.setItem(this.dbName, JSON.stringify(this.database));
+        return results.length ? results : null;
     }
 
     // remove a single entry by id
@@ -199,30 +150,17 @@ class Model {
                 _id: id
             }
         });
-
-        return new Promise(async(resolve, reject) => {
-            if (result) {
-                resolve(result[0])
-            } else {
-                resolve(null)
-            }
-        });
-
+        return result ? result[0] : null;
     }
 
     // find
     async find(filter) {
-        var me = this;
         await this.initModel();
         filter = filter || {};
-        return new Promise((resolve, reject) => {
-            var results = [];
-            var rows = me.model["rows"];
-            results = me.modelFilter.apply(rows, filter);
-            results.length
-                ? resolve(results)
-                : resolve(null);
-        });
+        var results = [];
+        var rows = this.model["rows"];
+        results = this.modelFilter.apply(rows, filter);
+        return results.length ? results : null;
     }
 
     // find a single entry by id
@@ -232,15 +170,7 @@ class Model {
                 _id: id
             }
         });
-
-        return new Promise(async(resolve, reject) => {
-            if (result) {
-                resolve(result[0])
-            } else {
-                resolve(null)
-            }
-        });
-
+        return result ? result[0] : null;
     }
 
     // get
