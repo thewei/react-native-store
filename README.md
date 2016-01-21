@@ -1,4 +1,7 @@
-## react-native-store [![Build Status](https://travis-ci.org/thewei/react-native-store.svg?branch=master)](https://travis-ci.org/thewei/react-native-store) ![NPM version](https://img.shields.io/npm/v/react-native-store.svg?style=flat) [![NPM downloads](http://img.shields.io/npm/dm/react-native-store.svg?style=flat-square)](https://npmjs.org/package/react-native-store)
+## react-native-store 
+[![Build Status](https://travis-ci.org/thewei/react-native-store.svg?branch=master)](https://travis-ci.org/thewei/react-native-store) 
+[![npm version](https://badge.fury.io/js/react-native-store.svg)](http://badge.fury.io/js/react-native-store)
+[![NPM downloads](http://img.shields.io/npm/dm/react-native-store.svg?style=flat-square)](https://npmjs.org/package/react-native-store)
 
 A simple database base on react-native AsyncStorage.
 
@@ -38,21 +41,21 @@ db_store
 ### Simple example
 
 ```js
-var reactNativeStore = require('react-native-store');
+import Store from 'react-native-store';
 
-var DB = {
-    'foo': reactNativeStore.model('foo'),
-    'bar': reactNativeStore.model('bar')
+const DB = {
+    'foo': Store.model('foo'),
+    'bar': Store.model('bar')
 }
 
 // somewhere inside react components
 
-componentDidMount: function() {
+componentDidMount() {
     // Return all items
     DB.foo.find().then(resp => this.setState({items: resp}));
 }
 
-handleFilter: function(itemName) {
+handleFilter(itemName) {
     DB.foo.find({
         where: {
             and: [{ foo: { neq: itemName } }, { age: { gte: 5 } }]
@@ -63,7 +66,7 @@ handleFilter: function(itemName) {
     }).then(resp => this.setState({items: resp}));
 }
 
-handleOnPress: function() {
+handleOnPress() {
     DB.bar.add({
         foo: 'foo',
         bar: 'bar',
