@@ -41,8 +41,8 @@ db_store
 var reactNativeStore = require('react-native-store');
 
 var DB = {
-    'foo': new reactNativeStore.model('foo'),
-    'bar': new reactNativeStore.model('bar')
+    'foo': reactNativeStore.model('foo'),
+    'bar': reactNativeStore.model('bar')
 }
 
 // somewhere inside react components
