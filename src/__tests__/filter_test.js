@@ -2,7 +2,7 @@
 jest.dontMock('../filter.js');
 
 const testDataSet = {
-  '1': {
+  1: {
     _id: 1,
     name: 'j',
     price: 3,
@@ -14,7 +14,7 @@ const testDataSet = {
       }
     }
   },
-  '2': {
+  2: {
     _id: 2,
     name: 'a',
     price: 4,
@@ -26,7 +26,7 @@ const testDataSet = {
       }
     }
   },
-  '3': {
+  3: {
     _id: 3,
     name: 'v',
     price: 1,
@@ -38,7 +38,7 @@ const testDataSet = {
       }
     }
   },
-  '4': {
+  4: {
     _id: 4,
     name: 'a',
     price: 2,
@@ -50,7 +50,7 @@ const testDataSet = {
       }
     }
   },
-  '5': {
+  5: {
     _id: 5,
     name: 's',
     price: 1,
@@ -62,7 +62,7 @@ const testDataSet = {
       }
     }
   },
-  '6': {
+  6: {
     _id: 6,
     name: 'c',
     price: 1,
@@ -74,7 +74,7 @@ const testDataSet = {
       }
     }
   },
-  '7': {
+  7: {
     _id: 7,
     name: 'r',
     price: 7,
@@ -86,7 +86,7 @@ const testDataSet = {
       }
     }
   },
-  '8': {
+  8: {
     _id: 8,
     name: 'i',
     price: 9,
@@ -98,7 +98,7 @@ const testDataSet = {
       }
     }
   },
-  '9': {
+  9: {
     _id: 9,
     name: 'p',
     price: 4,
@@ -110,7 +110,7 @@ const testDataSet = {
       }
     }
   },
-  '10': {
+  10: {
     _id: 10,
     name: 't',
     price: 999,
@@ -121,7 +121,7 @@ const testDataSet = {
         lng: 0
       }
     }
-  },
+  }
 };
 
 describe('filter Tests', function () {
@@ -270,5 +270,4 @@ describe('filter Tests', function () {
     }];
     expect(results).toEqual(expected);
   });
-
 });

@@ -1,16 +1,16 @@
 'use strict';
 jest.dontMock('../model');
 jest.dontMock('../store');
-var astore = require.requireActual('./mockStorage.js');
+let astore = require.requireActual('./mockStorage.js');
 jest.setMock('react-native', {
   AsyncStorage: astore
 });
 
 describe('store Tests', function () {
-  var Store;
+  let Store;
 
   beforeEach(function () {
-    var Store_ = require('../store');
+    let Store_ = require('../store');
     Store = new Store_({
       dbName: 'react-native-store'
     });
@@ -21,35 +21,31 @@ describe('store Tests', function () {
   });
 
   pit('should create model', function () {
-    var model = Store.model('newModel');
+    let model = Store.model('newModel');
     return model.add({
-        foo: 'bar'
-      })
-      .then(() => astore.getAllKeys())
-      .then(keys => {
-        return expect(keys).toEqual(['react-native-store']);
-      });
+      foo: 'bar'
+    }).then(() => astore.getAllKeys()).then(keys => {
+      return expect(keys).toEqual(['react-native-store']);
+    });
   });
 
   pit('should clear only react-native-store created keys', function () {
     astore.setItem('SomeOtherLibrary', 'Foobar');
-    var model = Store.model('newModel');
+    let model = Store.model('newModel');
     return model.add({
-        foo: 'bar'
-      })
-      .then(() => astore.getAllKeys())
-      .then(keys => {
-        return expect(keys).toEqual(['SomeOtherLibrary', 'react-native-store']);
-      })
-      .then(() => Store.clear())
-      .then(astore.getAllKeys)
-      .then(keys => {
-        return expect(keys).toEqual(['SomeOtherLibrary']);
-      });
+      foo: 'bar'
+    })
+    .then(() => astore.getAllKeys())
+    .then(keys => {
+      return expect(keys).toEqual(['SomeOtherLibrary', 'react-native-store']);
+    })
+    .then(() => Store.clear()).then(astore.getAllKeys).then(keys => {
+      return expect(keys).toEqual(['SomeOtherLibrary']);
+    });
   });
 
   pit('should run migrations', function () {
-    var migrations = require('../migrations');
+    let migrations = require('../migrations');
     migrations.push({
       version: 0.2,
       perform: jest.genMockFunction()
@@ -60,7 +56,7 @@ describe('store Tests', function () {
   });
 
   pit('should run partial migrations', function () {
-    var migrations = require('../migrations');
+    let migrations = require('../migrations');
     migrations.push({
       version: 0.2,
       perform: jest.genMockFunction()
@@ -77,7 +73,7 @@ describe('store Tests', function () {
   });
 
   pit('should not run migrations', function () {
-    var migrations = require('../migrations');
+    let migrations = require('../migrations');
     migrations.push({
       version: 0.2,
       perform: jest.genMockFunction()
@@ -92,5 +88,4 @@ describe('store Tests', function () {
       expect(migrations[1].perform).not.toBeCalled();
     });
   });
-
 });

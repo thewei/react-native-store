@@ -45,26 +45,22 @@ class Filter {
     // Found a lot of conflicting info on whether Array.sort() is stable,
     // but in testing so far it seems to be.
     // Reverse the arrays of keys to get the desired weight
-    let orderKeys = Object.keys(order).reverse();
-    for (let key in orderKeys) {
-      // If for some reason the value of the order is not ASC or DESC,
-      // sort by ASC
+    let orderAllKeys = Object.keys(order).reverse();
+
+    function keySort(orderKeys, key, a, b) {
       let greater = order[orderKeys[key]] === 'DESC' ? -1 : 1;
       let lesser = greater * -1;
-      let keySort = function (a, b) {
-        if (a[orderKeys[key]] < b[orderKeys[key]]) {
-          return lesser;
-        }
-
-        if (a[orderKeys[key]] > b[orderKeys[key]]) {
-          return greater;
-        }
-
-        if (a[orderKeys[key]] === b[orderKeys[key]]) {
-          return 0;
-        }
-
+      if (a[orderKeys[key]] < b[orderKeys[key]]) {
+        return lesser;
+      } else if (a[orderKeys[key]] > b[orderKeys[key]]) {
+        return greater;
       }
+      return 0;
+    }
+    for (let key in orderAllKeys) {
+      // If for some reason the value of the order is not ASC or DESC,
+      // sort by ASC
+      keySort(orderAllKeys, key, a, b);
       result.sort(keySort);
     }
     // Apply limit and offset filters through results.slice(offset, offset + limit)
@@ -83,24 +79,20 @@ class Filter {
         let key = filterKeys[i];
         // key is either a property name, or logical operator
         if (this.logicalOperators.indexOf(key) > -1) {
-          if (!this.evaluateLogicalOperator(key, filter[key], element)){
+          if (!this.evaluateLogicalOperator(key, filter[key], element)) {
             return false;
           }
-
         } else if (this.comparisonOperators.indexOf(key) > -1) {
-          if (!this.evaluateComparisonOperator(key, filter[key], element)){
+          if (!this.evaluateComparisonOperator(key, filter[key], element)) {
             return false;
           }
-
         } else if (typeof filter[key] === 'object') {
-          if (!this.evaluate(filter[key], element[key])){
+          if (!this.evaluate(filter[key], element[key])) {
             return false;
           }
-
-        } else if (filter[key] !== element[key]){
+        } else if (filter[key] !== element[key]) {
           return false;
         }
-
       }
       return true;
     }
@@ -183,7 +175,7 @@ class Filter {
       // we are being strict and the filter contains the key, or if
       // we are not being strict and our filter does not want to remove
       // the property.
-      if ((strict && fields[elementKeys[key]] === true) || (!strict && !(fields[elementKeys[key]] === false))) {
+      if (strict && fields[elementKeys[key]] === true || !strict && !(fields[elementKeys[key]] === false)) {
         result[elementKeys[key]] = element[elementKeys[key]];
       }
     }
