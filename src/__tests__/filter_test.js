@@ -125,15 +125,15 @@ const testDataSet = {
 };
 
 describe('filter Tests', function () {
-  var Filter;
+  let Filter;
 
   beforeEach(function () {
-    var Filter_ = require('../filter.js');
+    let Filter_ = require('../filter.js');
     Filter = new Filter_();
   });
 
   it('should filter using find', function () {
-    var filter = {
+    let filter = {
       where: {
         or: [{
           price: {
@@ -157,9 +157,9 @@ describe('filter Tests', function () {
         price: 'ASC'
       }
     };
-    var results = Filter.apply(testDataSet, filter);
+    let results = Filter.apply(testDataSet, filter);
     expect(results.length).toEqual(4);
-    var expected = [{
+    let expected = [{
       _id: 5,
       price: 1,
       location: {
@@ -204,13 +204,13 @@ describe('filter Tests', function () {
   });
 
   it('should filter using findById', function () {
-    var findById = {
+    let findById = {
       where: {
         _id: 3
       }
     };
-    var results = Filter.apply(testDataSet, findById);
-    var expected = [{
+    let results = Filter.apply(testDataSet, findById);
+    let expected = [{
       _id: 3,
       name: 'v',
       price: 1,
@@ -226,15 +226,15 @@ describe('filter Tests', function () {
   });
 
   it('should filter entries lexicographically', function () {
-    var lexiFind = {
+    let lexiFind = {
       where: {
         name: {
           lte: 'f'
         }
       }
     };
-    var results = Filter.apply(testDataSet, lexiFind);
-    var expected = [{
+    let results = Filter.apply(testDataSet, lexiFind);
+    let expected = [{
       _id: 2,
       name: 'a',
       price: 4,

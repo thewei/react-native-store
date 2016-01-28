@@ -1,4 +1,5 @@
-"use strict";
+'use strict';
+
 const Migrations = [{
   version: 0.2,
   perform() {
