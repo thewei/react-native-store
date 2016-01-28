@@ -1,10 +1,8 @@
 'use strict';
 
-import {
-  AsyncStorage
-}
-from 'react-native';
-import Model from './model';
+var AsyncStorage = require('react-native').AsyncStorage;
+var Model = require('./model.js');
+var Util = require('./util.js');
 
 class Store {
 
@@ -13,24 +11,21 @@ class Store {
   }
 
   async _getCurrentVersion(versionKey) {
-    let currentVersion = await AsyncStorage.getItem(versionKey);
+    var currentVersion = await AsyncStorage.getItem(versionKey);
     currentVersion = currentVersion || 0;
     return parseFloat(currentVersion);
   }
 
   async migrate() {
-    const migrations = require('./migrations.js');
-    const versionKey = `${this.dbName}_version`;
-    const currentVersion = await this._getCurrentVersion(versionKey);
-    let target = migrations.slice(-1)[0];
-    if (currentVersion === target.version) {
+    var migrations = require('./migrations.js');
+    var versionKey = `${this.dbName}_version`;
+    var currentVersion = await this._getCurrentVersion(versionKey);
+    var target = migrations.slice(-1)[0];
+    if (currentVersion == target.version)
       return;
-    }
-
     for (let migration of migrations) {
-      if (migration.version <= currentVersion) {
+      if (migration.version <= currentVersion)
         continue;
-      }
       migration.perform();
       await AsyncStorage.setItem(versionKey, migration.version.toString());
     }

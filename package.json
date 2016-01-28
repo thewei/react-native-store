@@ -5,7 +5,8 @@
   "main": "./lib/index.js",
   "scripts": {
     "watch": "babel src --watch --presets es2015,stage-0 --out-dir lib",
-    "build": "eslint src && babel src --presets es2015,stage-0 --out-dir lib",
+    "build": "babel src --presets es2015,stage-0 --out-dir lib",
+    "eslint": "eslint src",
     "test": "jest --verbose"
   },
   "repository": {
